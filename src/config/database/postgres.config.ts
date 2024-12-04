@@ -16,7 +16,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       password: this.configService.get<string>('DATABASE_PASSWORD'),
       database: this.configService.get<string>('DATABASE_NAME'),
       entities: [],
-      synchronize: true,
+      synchronize: this.configService.get<string>('NODE_ENV') !== 'production',
     };
   }
 }
