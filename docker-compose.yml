@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: stack_app_backend
+    container_name: stack_app_backend_nestjs
     ports:
       - '3000:3000'
     volumes:
@@ -13,21 +13,25 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      cache:
+        condition: service_started
     environment:
       DATABASE_HOST: database
       DATABASE_PORT: 5432
       DATABASE_USER: postgres
       DATABASE_PASSWORD: 123
       DATABASE_NAME: app_db
+      REDIS_HOST: cache
+      REDIS_PORT: 6379
     restart: unless-stopped
     networks:
       - stack_app_network
 
   database:
     image: postgres:13
-    container_name: stack_app_database
-    expose:
-      - '5432'
+    container_name: stack_app_database_postgres
+    ports:
+      - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 123
@@ -40,6 +44,14 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    networks:
+      - stack_app_network
+
+  cache:
+    image: redis:latest
+    container_name: stack_app_cache_redis
+    ports:
+      - '6379:6379'
     networks:
       - stack_app_network
 

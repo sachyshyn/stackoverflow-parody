@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PostgresConfigService } from './config/database/postgres.config';
+import { RedisModule } from '@nestjs-modules/ioredis';
+import { RedisConfigService } from './config/cache/redis.confg';
 
 @Module({
   imports: [
@@ -15,8 +17,13 @@ import { PostgresConfigService } from './config/database/postgres.config';
       useClass: PostgresConfigService,
       inject: [ConfigService],
     }),
+    RedisModule.forRootAsync({
+      imports: [ConfigModule],
+      useClass: RedisConfigService,
+      inject: [ConfigModule],
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, RedisConfigService],
 })
 export class AppModule {}
