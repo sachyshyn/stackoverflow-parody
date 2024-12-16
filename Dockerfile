@@ -2,6 +2,9 @@
 # Use the official Node.js image as the base image
 FROM node:alpine
 
+# Install PostgreSQL client
+RUN apk add --no-cache postgresql-client
+
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
