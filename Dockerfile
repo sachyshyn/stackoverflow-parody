@@ -1,24 +1,36 @@
+# Stage 1: Build
+FROM node:alpine AS build
 
-# Use the official Node.js image as the base image
-FROM node:alpine
-
-# Install PostgreSQL client
+# Install PostgreSQL client for application use
 RUN apk add --no-cache postgresql-client
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-# Install the application dependencies
-RUN npm install
+# Install dependencies using npm ci
+RUN npm ci
 
 # Copy the rest of the application files
 COPY . .
 
-# Build the NestJS application
+# Build the application
 RUN npm run build
+
+# Stage 2: Runtime
+FROM node:alpine AS runtime
+
+# Set the working directory inside the container
+WORKDIR /usr/src/app
+
+# Copy only the built files and package-lock.json
+COPY --from=build /usr/src/app/dist ./dist
+COPY --from=build /usr/src/app/package.json /usr/src/app/package-lock.json ./
+
+# Install only production dependencies using npm ci
+RUN npm ci --only=production
 
 # Expose the application port
 EXPOSE 3000

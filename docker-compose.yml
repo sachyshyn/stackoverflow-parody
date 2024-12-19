@@ -9,7 +9,6 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev
     depends_on:
       database:
         condition: service_healthy
