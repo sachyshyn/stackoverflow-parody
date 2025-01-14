@@ -22,6 +22,7 @@ services:
       DATABASE_NAME: app_db
       REDIS_HOST: cache
       REDIS_PORT: 6379
+      JWT_SECRET: sdcklvsdfo39r8md89234ufn2d823d89
     restart: unless-stopped
     networks:
       - stack_app_network
