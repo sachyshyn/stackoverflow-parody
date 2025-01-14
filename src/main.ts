@@ -15,7 +15,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
 
   app.enableVersioning({
     type: VersioningType.URI,

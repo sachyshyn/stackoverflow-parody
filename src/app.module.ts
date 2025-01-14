@@ -7,6 +7,7 @@ import { PostgresConfigService } from './config/database/postgres.config';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { RedisConfigService } from './config/cache/redis.confg';
 import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './modules/auth/auth.module';
       inject: [ConfigModule],
     }),
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, RedisConfigService],

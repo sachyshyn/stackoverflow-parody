@@ -40,6 +40,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       database: this.#database,
       entities: [],
       synchronize: this.#shallSynchronize,
+      autoLoadEntities: true,
     };
   }
 }
