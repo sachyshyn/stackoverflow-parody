@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-} from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import * as argon from 'argon2';
@@ -56,23 +52,8 @@ export class AuthService {
     return { access_token };
   }
 
-  async login(userDto: CreateUserDto) {
-    const existingUser = await this.usersService.findOneByEmail(userDto.email);
-
-    if (!existingUser) {
-      return new BadRequestException('Incorrect email or password');
-    }
-
-    const passwordsMatched = await argon.verify(
-      existingUser.password,
-      userDto.password,
-    );
-
-    if (!passwordsMatched) {
-      return new BadRequestException('Incorrect email or password');
-    }
-
-    return this.signToken(existingUser.uuid, existingUser.email);
+  login() {
+    return 'login';
   }
 
   logout() {

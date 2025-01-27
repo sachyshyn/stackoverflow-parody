@@ -22,7 +22,7 @@ import { UsersModule } from './modules/users/users.module';
     RedisModule.forRootAsync({
       imports: [ConfigModule],
       useClass: RedisConfigService,
-      inject: [ConfigService],
+      inject: [ConfigModule],
     }),
     AuthModule,
     UsersModule,
