@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { AppDataSource } from 'data-source';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
@@ -29,14 +28,6 @@ import { AppDataSource } from 'data-source';
     optionsSuccessStatus: 204,
     credentials: true,
   });
-
-  await AppDataSource.initialize()
-    .then(() => {
-      console.log('Data Source has been initialized!');
-    })
-    .catch((err) => {
-      console.error('Error during Data Source initialization', err);
-    });
 
   await app.listen(process.env.PORT ?? 3000);
 })();
