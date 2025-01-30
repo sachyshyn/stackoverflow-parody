@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-import { AppDataSource } from 'data-source';
+import { AppDataSource } from 'data-source.mjs';
 
 (async () => {
   const app = await NestFactory.create(AppModule);

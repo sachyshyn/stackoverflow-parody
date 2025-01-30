@@ -10,11 +10,11 @@ export class RedisConfigService implements RedisModuleOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
 
   get #host() {
-    return this.configService.get<string>('REDIS_HOST', 'redis');
+    return this.configService.getOrThrow<string>('REDIS_HOST');
   }
 
   get #port() {
-    return this.configService.get<string>('REDIS_PORT', '6379');
+    return this.configService.getOrThrow<string>('REDIS_PORT');
   }
 
   createRedisModuleOptions(): RedisModuleOptions {

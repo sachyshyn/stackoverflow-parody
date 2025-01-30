@@ -7,27 +7,23 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   get #host() {
-    return this.configService.get<string>('DATABASE_HOST') ?? 'localhost';
+    return this.configService.getOrThrow<string>('DATABASE_HOST');
   }
 
   get #port() {
-    return Number(this.configService.get<string>('DATABASE_PORT')) ?? 3000;
+    return Number(this.configService.getOrThrow<string>('DATABASE_PORT'));
   }
 
   get #username() {
-    return this.configService.get<string>('DATABASE_USER');
+    return this.configService.getOrThrow<string>('DATABASE_USER');
   }
 
   get #password() {
-    return this.configService.get<string>('DATABASE_PASSWORD');
+    return this.configService.getOrThrow<string>('DATABASE_PASSWORD');
   }
 
   get #database() {
-    return this.configService.get<string>('DATABASE_NAME');
-  }
-
-  get #shallSynchronize() {
-    return this.configService.get<string>('NODE_ENV') !== 'production';
+    return this.configService.getOrThrow<string>('DATABASE_NAME');
   }
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
@@ -39,7 +35,7 @@ export class PostgresConfigService implements TypeOrmOptionsFactory {
       password: this.#password,
       database: this.#database,
       entities: [],
-      synchronize: this.#shallSynchronize,
+      synchronize: false,
       autoLoadEntities: true,
     };
   }
