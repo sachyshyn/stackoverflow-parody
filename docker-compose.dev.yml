@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    container_name: stack_app_backend_nestjs
+    container_name: stack_app_be
     ports:
       - '3000:3000'
     volumes:
@@ -28,7 +28,7 @@ services:
 
   database:
     image: postgres:13
-    container_name: stack_app_database_postgres
+    container_name: stack_app_db
     ports:
       - '5432:5432'
     environment:
@@ -48,7 +48,7 @@ services:
 
   cache:
     image: redis:latest
-    container_name: stack_app_cache_redis
+    container_name: stack_app_redis
     ports:
       - '6379:6379'
     networks:
