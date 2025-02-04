@@ -1,4 +1,8 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
 import * as argon from 'argon2';
@@ -52,9 +56,19 @@ export class AuthService {
     return { access_token };
   }
 
-  login() {
-    return 'login';
-  }
+  login = async (userDto: CreateUserDto) => {
+    const existingUser = await this.usersService.findOneByEmail(userDto.email);
+
+    if (!existingUser) {
+      throw new UnauthorizedException('User with this email not found');
+    }
+
+    if (!argon.verify(existingUser.password, userDto.password)) {
+      throw new UnauthorizedException('Email or password does not match');
+    }
+
+    return this.signToken(existingUser.uuid, userDto.email);
+  };
 
   logout() {
     return 'logout';
