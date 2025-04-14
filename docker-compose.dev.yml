@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  database:
+    image: postgres:13
+    container_name: stack_app_database_postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: app_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - stack_app_network
+
+  cache:
+    image: redis:latest
+    container_name: stack_app_cache_redis
+    ports:
+      - '6379:6379'
+    networks:
+      - stack_app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  stack_app_network:
+    driver: bridge
